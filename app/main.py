@@ -1,27 +1,29 @@
-# Camera feature : deploying our fruit and vegetable classifier using Flask
+# Camera feature : deploying our fruit and vegetable classifier with Flask
 import json
 import os
 import urllib.request
 import numpy as np
 import pathlib
+import pickle
 temp = pathlib.PosixPath
 pathlib.PosixPath = pathlib.WindowsPath
 from flask import Flask, render_template, request
 from fastai.vision.all import *
-
 image_directory = "test_images"
 
 # path for the trained classifier
-path = Path(os.getcwd())
-full_path = os.path.join(path,'fruit_veg_model.pkl')
+path = os.path.abspath(os.path.dirname(__file__))
+full_path = os.path.join(path, "fruit_veg_model.pkl")
 print("path is:",path)
 print("full_path is: ",full_path)
+
 
 # load the model
 learner = load_learner(full_path)
 
 
 app = Flask(__name__)
+app.config["DEBUG"] = True
 
 
 @app.route('/')
